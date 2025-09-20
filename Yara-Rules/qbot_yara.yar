@@ -4,7 +4,7 @@ rule win_trojan_Qbot
 {
     meta:
       author = "Juanma"
-      description = "Detects the trojan Qbot/Qakbot"
+      description = "Detects Qbot/Qakbot"
       reference = "https://bazaar.abuse.ch/sample/6a8557a2f8e1338e6edb2a07c345882389230ea24ffeb741a59621b7e8b56c59/"
       date = "9/16/2025"
       hash = "6a8557a2f8e1338e6edb2a07c345882389230ea24ffeb741a59621b7e8b56c59"
