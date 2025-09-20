@@ -5,7 +5,7 @@ rule MAL_Darkgate_Trojan
     meta:
         author = "Juanma"
         description = "Detects Darkgate"
-        date = "9/1/2025"
+        date = "9/17/2025"
         reference = "https://bazaar.abuse.ch/sample/0efb25b41efef47892a1ed5dfbea4a8374189593217929ef6c46724d0580db23/"
         hash = "0efb25b41efef47892a1ed5dfbea4a8374189593217929ef6c46724d0580db23"
     strings:

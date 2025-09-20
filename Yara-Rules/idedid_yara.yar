@@ -1,3 +1,5 @@
+import "pe"
+
 rule MAL_Iceid_Trojan
 {
     meta:
