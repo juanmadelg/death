@@ -1,0 +1,2 @@
+# Alerts when matches the certificate issuer. Country: PT, Satae: GR, Locality name: Ocoa Jeoqkfmz, Common name: fscej.org, Organization Name: Dqimuc Saoamaf Sngiantob Kjujtk
+alert tcp $HOME_NET any <> 98.178.242.28 any (msg:"Qbot C2C connection detected";content:"|50 54|";content:"|47 52|";content:"|4f 63 6f 61 20 4a 65 6f 71 6b 66 6d 7a|";content:"|66 73 63 65 6a 2e 6f 72 67|";content:"|44 71 69 6d 75 63 20 53 61 6f 61 6d 61 66 20 53 6e 67 69 61 6e 74 6f 62 20 4b 6a 75 6a 74 6b|";sid:1000001)

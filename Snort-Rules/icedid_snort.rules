@@ -1,0 +1,159 @@
+# Distribution of GZIP file
+alert udp $HOME_NET any -> $EXTERNAL_NET 53
+(
+    msg:"DNS request to abegelkunic.com";
+    content:"|61 62 65 67 65 6c 6b 75 6e 69 63 03 63 6f 6d|";
+    sid:1000001;
+)
+alert tcp $HOME_NET any -> $EXTERNAL_NET 80
+(
+    msg:"HTTP GET request to abegelkunic.com";
+    flow:to_server,established;
+    content:"GET", fast_pattern;
+    content:"abegelkunic.com";
+    flowbits:set,gzip_dis;
+    flowbits:noalert;
+    sid:1000002;
+)
+alert tcp $EXTERNAL_NET 80 -> $HOME_NET any
+(
+    msg:"HTTP response for abegelkunic.com - Gzip file detected";
+    flow:to_client,established;
+    http_header;
+    content:"application/gzip"; # |1f 8b|
+    flowbits:isset,gzip_dis;
+    sid:1000003;
+)
+# DNS requests to IcedID C2 Server domains
+alert udp $HOME_NET any -> $EXTERNAL_NET 53
+(
+    msg:"C2 Server - DNS request to ultomductingbig.pro";
+    content:"|75 6c 74 6f 6d 64 75 63 74 69 6e 67 62 69 67 03 70 72 6f|";
+    sid:1000004;
+)
+alert tcp $HOME_NET any -> $EXTERNAL_NET 443
+(
+    msg:"C2 Server - TLS client Hello"; # ultomductingbig.pro
+    ssl_state:client_hello;
+    content:"|75 6c 74 6f 6d 64 75 63 74 69 6e 67 62 69 67 2e 70 72 6f|";
+    flowbits:set,c2_dom1;
+    flowbits:noalert;
+    sid:1000005;
+)
+alert tcp 193.109.120.51 443 -> $HOME_NET any
+(
+    msg:"C2 Server - Connection established to ultomductingbig.pro";
+    ssl_state:client_keyx,server_keyx;
+    content:"localhost";
+    content:"AU";
+    content:"Some-State";
+    content:"Internet Widgits Pty Ltd";
+    flowbits:isset,c2_dom1;
+    sid:1000006;
+)
+alert udp $HOME_NET any -> $EXTERNAL_NET 53 # Pkg 693
+(
+    msg:"C2 Server - DNS request to alohasockstaina.com";
+    content:"|61 6c 6f 68 61 73 6f 63 6b 73 74 61 69 6e 61 03 63 6f 6d|";
+    sid:1000007;
+)
+alert tcp $HOME_NET any -> 146.190.25.131 443
+(
+    msg:"C2 Server - TLS client Hello"; # alohasockstaina.com
+    ssl_state:client_hello;
+    content:"|61 6c 6f 68 61 73 6f 63 6b 73 74 61 69 6e 61 2e 63 6f 6d|";
+    flowbits:set,c2_dom2;
+    flowbits:noalert;
+    sid:1000008;
+)
+alert tcp 146.190.25.131 443 -> $HOME_NET any
+(
+    msg:"C2 Server - Connection established to alohasockstaina.com";
+    ssl_state:client_keyx,server_keyx;
+    content:"localhost";
+    content:"AU";
+    content:"Some-State";
+    content:"Internet Widgits Pty Ltd";
+    flowbits:isset,c2_dom2;
+    sid:1000009;
+)
+alert udp $HOME_NET any -> $EXTERNAL_NET 53 # Pkg 3034
+(
+    msg:"C2 Server - DNS request to wiandukachelly.com";
+    content:"|77 69 61 6e 64 75 6b 61 63 68 65 6c 6c 79 03 63 6f 6d|";
+    sid:1000010;
+)
+alert tcp $HOME_NET any -> 46.21.153.211 443
+(
+    msg:"C2 Server - TLS client Hello"; # wiandukachelly.com
+    ssl_state:client_hello;
+    content:"|77 69 61 6e 64 75 6b 61 63 68 65 6c 6c 79 2e 63 6f 6d|";
+    flowbits:set,c2_dom3;
+    flowbits:noalert;
+    sid:1000011;
+)
+alert tcp 46.21.153.211 443 -> $HOME_NET any
+(
+    msg:"C2 Server - Connection established to wiandukachelly.com"; # pkg 3042
+    ssl_state:client_keyx,server_keyx;
+    content:"localhost";
+    content:"AU";
+    content:"Some-State";
+    content:"Internet Widgits Pty Ltd";
+    flowbits:isset,c2_dom3;
+    sid:1000012;
+)
+# Cobalt Strike
+alert udp $HOME_NET any -> $EXTERNAL_NET 53
+(
+    msg:"Cobalt Strike - DNS request to rehazosipa.com";
+    content:"|72 65 68 61 7a 6f 73 69 70 61 03 63 6f 6d|";
+    sid:1000013;
+)
+alert tcp $HOME_NET any -> 23.106.223.135 443
+(
+    msg:"Cobalt Strike - TLS client Hello"; # rehazosipa.com
+    ssl_state:client_hello; # Tlsv1.3
+    content:"|72 65 68 61 7a 6f 73 69 70 61 2e 63 6f 6d|";
+    flowbits:set,cs_dom1;
+    flowbits:noalert;
+    sid:1000014;
+)
+alert tcp 23.106.223.135 443 -> $HOME_NET any
+(
+    msg:"Cobalt Strike - Connection established to rehazosipa.com"; # pkg 3042
+    ssl_state:server_hello; # Tlsv1.3
+    flowbits:isset,cs_dom1;
+    sid:1000015;
+)
+#GET
+alert tcp $HOME_NET any -> 104.238.220.131 80
+(
+    msg:"Cobalt Strike - HTTP GET request to /download/sys.exe";
+    flow:to_server,established;
+    content:"GET /download/sys.exe", fast_pattern;
+    flowbits:set,exe_dis;
+    flowbits:noalert;
+    sid:1000016;
+)
+alert tcp 104.238.220.131 80 -> $HOME_NET any
+(
+    msg:"Cobalt Strike - Windows/DOS exe file download detected";
+    flow:to_client,established;
+    http_header;
+    content:"application/octet-stream";
+    flowbits:isset,exe_dis;
+    sid:1000017;
+)
+alert udp $HOME_NET any -> $EXTERNAL_NET 53
+(
+    msg:"Cobalt Strike - DNS request to wafefuvuko.com"; #6033
+    content:"|77 61 66 65 66 75 76 75 6b 6f 03 63 6f 6d|";
+    sid:1000018;
+)
+alert tcp 172.93.179.196 443 -> $HOME_NET any
+(
+    msg:"Cobalt Strike - Connection established to wafefuvuko.com";
+    ssl_state:server_hello; # Tlsv1.3
+    sid:1000019;
+)

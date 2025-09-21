@@ -1,0 +1,56 @@
+# DNS connections rules:
+alert udp $HOME_NET any -> any 53 
+(
+    msg:"DNS request to Astaroth's domain - *.clus.ga";
+    content:"|04 63 6c 75 73 02 67 61 00|"; # *.clus.ga
+    sid:1000001;
+)
+alert udp $HOME_NET any -> any 53 
+(
+    msg:"DNS request to Astaroth's domain - *.assessirianricoadvocacia.cloud";
+    content:"|18 61 73 73 65 73 73 69 72 69 61 6e 72 69 63 6f 61 64 76 6f 63 61 63 69 61 05 63 6c 6f 75 64|"; # *.assessirianricoadvocacia.cloud
+    sid:1000002;
+)
+alert udp $HOME_NET any -> any 53 
+(
+    msg:"DNS request to Astaroth's domain - *.creditcardflyers.com";
+    content:"|10 63 72 65 64 69 74 63 61 72 64 66 6c 79 65 72 73 03 63 6f 6d|"; # *.creditcardflyers.com
+    sid:1000003;
+)
+alert udp $HOME_NET any -> any 53 
+(
+    msg:"DNS request to Astaroth's domain - *.sophiaemarlibuffetme.link";
+    content:"|14 73 6f 70 68 69 61 65 6d 61 72 6c 69 62 75 66 66 65 74 6d 65 04 6c 69 6e 6b|"; # *.sophiaemarlibuffetme.link
+    sid:1000004;
+)
+alert udp $HOME_NET any -> any 53 
+(
+    msg:"DNS request to Astaroth's domain - *.felipeemarlimarketingl.link";
+    content:"|16 66 65 6c 69 70 65 65 6d 61 72 6c 69 6d 61 72 6b 65 74 69 6e 67 6c 04 6c 69 6e 6b|"; # *.felipeemarlimarketingl.link
+    flowbits:isset,felipe_dom;
+    sid:1000005;
+)
+# Victim receives .zip files 
+alert tcp $EXTERNAL_NET 80 -> $HOME_NET any
+(
+    msg:"Exploit delivered via .zip file from *.felipeemarlimarketingl.link";
+    flow:to_client,established;
+    http_header;
+    content:"application/octet-stream";
+    pcre:"/(\w|\d)*\.zip/i";
+    http_uri;
+    content:"/?41121051535628719", nocase;
+    flowbits:set,felipe_dom;
+    sid:1000006;
+)
+# PE (MZ) file detected inside the .zip files. 
+alert tcp $EXTERNAL_NET 80 -> $HOME_NET any
+(
+    msg:"Windows/DOS executable file download detected from *.felipeemarlimarketingl.link";
+    file_data;
+    content:"This program cannot be run in DOS mode";
+    http_uri;
+    content:"/?41121051535628719";
+    flowbits:set,felipe_dom;
+    sid:1000007;
+)
