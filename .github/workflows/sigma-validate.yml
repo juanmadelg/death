@@ -9,12 +9,12 @@ on:
     branches-ignore:
       - main
     paths:
-      - 'Sigma-Rules/**.yml'
+      - 'sigma/**.yml'
   pull_request:
     branches:
       - main
     paths:
-      - 'Sigma-Rules/**.yml'
+      - 'sigma/**.yml'
 
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
