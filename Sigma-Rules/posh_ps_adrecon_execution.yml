@@ -1,6 +1,4 @@
 # This rule was copied from SigmaHQ repository only to test the actions of this repository
-# Lab purposes only
-# Another comment
 
 title: PowerShell ADRecon Execution
 id: bf72941a-cba0-41ea-b18c-9aca3925690d
