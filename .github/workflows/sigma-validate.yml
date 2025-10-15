@@ -46,7 +46,7 @@ jobs:
     - name: Test that conversion does not fail
       if: github.event_name == 'pull_request'
       run: |
-        sigma convert -t lucene -f siem_rule_ndjson -p ecs_windows -o rules.ndjson sigma
+        sigma convert -t lucene -f siem_rule_ndjson -p ecs_windows -o rules.ndjson Sigma-Rules
 
     - name: Test that the post-process script runs without exceptions
       if: github.event_name == 'pull_request'
