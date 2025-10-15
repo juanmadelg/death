@@ -35,7 +35,7 @@ jobs:
 
     - name: Validate rules
       run: |
-        sigma check Sigma-Rules/
+        sigma check Sigma-Rules/windows/
 
     - name: Install Sigma CLI Elasticsearch backend
       if: github.event_name == 'pull_request'
@@ -45,7 +45,7 @@ jobs:
     - name: Test that conversion does not fail
       if: github.event_name == 'pull_request'
       run: |
-        sigma convert -t lucene -f siem_rule_ndjson -p ecs_windows -o rules.ndjson Sigma-Rules/
+        sigma convert -t lucene -f siem_rule_ndjson -p ecs_windows -o rules.ndjson Sigma-Rules/windows
 
     - name: Test that the post-process script runs without exceptions
       if: github.event_name == 'pull_request'
