@@ -9,7 +9,7 @@ on:
     branches-ignore:
       - main
     paths:
-      - 'sigma/**.yml'
+      - 'Sigma-Rules/**.yml' # Sigma rules path
   pull_request:
     branches:
       - main
