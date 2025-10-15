@@ -36,7 +36,7 @@ jobs:
 
     - name: Validate rules
       run: |
-        sigma check Sigma-Rules
+        sigma --loglevel debug check Sigma-Rules
 
     - name: Install Sigma CLI Elasticsearch backend
       if: github.event_name == 'pull_request'
