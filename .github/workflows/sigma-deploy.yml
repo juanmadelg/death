@@ -31,7 +31,7 @@ jobs:
 
     - name: Convert Sigma rules and output to NDJSON
       run: |
-        sigma convert -t lucene -f siem_rule_ndjson -p ecs_windows -o rules.ndjson sigma
+        sigma convert -t lucene -f siem_rule_ndjson -p ecs_windows -o rules.ndjson Sigma-Rules/windows/
 
     - name: Post-process rules in NDJSON
       run: |
