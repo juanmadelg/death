@@ -23,7 +23,7 @@ jobs:
 
     - name: Validate rules
       run: |
-        sigma check sigma
+        sigma check Sigma-Rules/windows/
 
     - name: Install Sigma CLI Elasticsearch backend
       run: |
