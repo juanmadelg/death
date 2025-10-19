@@ -1,5 +1,5 @@
-title: Detect PS command encoded execution
-id: a677e326-191f-4113-a2e3-52351961a1fa
+title: SIGMA - Detect PS command encoded execution
+id: 88c20d01-c051-4f0c-926a-9e53b50c5d24
 status: test
 description: # Try to follow the flow of "What are we detecting, how is it used, why is it (bad|interesting|noteworthy)"
 references:
@@ -7,7 +7,6 @@ references:
   - Atomic Test 15 - ATHPowerShellCommandLineParameter -EncodedCommand parameter variations
 author: juanma
 date: 2025-10-19
-
 tags:
     - attack.execution
     - attack.t1059.001
