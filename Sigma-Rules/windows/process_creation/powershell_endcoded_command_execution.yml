@@ -1,0 +1,35 @@
+title: Detect PS command encoded execution - Execution
+id: 88c20d01-c051-4f0c-926a-9e53b50c5d24
+status: stable
+description: Detects the execution of encoded command using PowerShell
+references:
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1059.001
+  - Atomic Test ATHPowerShellCommandLineParameter -EncodedCommand
+author: juanma
+date: 2025-10-26
+tags:
+    - attack.execution
+    - attack.t1059.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+   - Image|endswith: '\powershell.exe'
+   - OriginalFilename: 'PowerShell.EXE'
+  selection_cmdmust:
+    - CommandLine|contains: '-NoProfile'
+  selection_cmd:
+   - CommandLine|contains:
+         - '-enc'
+         - '-Enc'
+         - '-EncodedCommand'
+         - '-encodedcommand'
+         - '-ec'
+         - '-en'
+         - '-ENC'
+         - '-E'
+  condition: all of selection_*
+falsepositives:
+  - This could be a legit activity from an admin
+level: medium
