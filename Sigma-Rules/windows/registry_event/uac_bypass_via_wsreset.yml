@@ -1,0 +1,42 @@
+title: UAC Bypass via WSReset
+id: 6ea3bf32-9680-422d-9f50-e90716b12a66
+status: experimental
+description: Detects registry modifications that attempt to abuse the WSReset (Windows Store Reset) auto-elevate capability
+  by writing a command into an AppX package Shell\open\command key (commonly used in the WSReset UAC bypass).
+references:
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1548.002
+  - https://research.splunk.com/endpoint/8b5901bc-da63-11eb-be43-acde48001122/
+  - https://lolbas-project.github.io/lolbas/Binaries/Wsreset/
+author: Juanma
+date: 2025-10-29
+tags:
+  - attack.t1548.002
+  - attack.privilege-escalation
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: registry_event # registry create / set / update events (Sysmon EventID 12/13 or Windows Registry events)
+detection:
+  selection_registry_path:
+    TargetObject|contains: '\AppX82a6gwre4fdg3bt635tn5ctqjf8msdd2\Shell\open\command'
+  selection_value_names:
+    RegistryValueName:
+      - '(Default)'
+      - 'DelegateExecute'
+  selection_value_data:
+    RegistryValueData|contains:
+      - 'powershell'
+      - 'cmd.exe'
+      - 'reg.exe'
+      - 'wsreset.exe'
+  condition: all of selection_*
+fields:
+  - TargetObject
+  - RegistryValueName
+  - RegistryValueData
+  - Image
+  - User
+falsepositives:
+  - Legitimate administrative tooling or store-repair utilities that modify AppX store keys (rare).
+  - Endpoint management software that interacts with AppX keys.
+level: high
