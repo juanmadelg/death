@@ -1,0 +1,24 @@
+title: Detectes Run Key Persistance
+id: f35a2849-1f48-49e7-b353-271ec89c7d07
+status: test
+description: Detects when a subkey contains a program stored on a startup entries and will run automatically when the user logs in.
+references:
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1547.001
+  - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/reg-add
+author: Juanma
+date: 2025-10-27
+tags:
+  - attack.t1547.001
+  - attack.persistence
+logsource:
+  category: regitry_event
+  product: windows
+detection:
+  selection_registry_path:
+    TargetObject|contains: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
+  selection_registry_values:
+    RegistruValueType: 'REG_SZ'
+  selection_registry_data:
+    RegistryValueData|endswith: '.exe'
+  condition: all of selection_*
+level: high
