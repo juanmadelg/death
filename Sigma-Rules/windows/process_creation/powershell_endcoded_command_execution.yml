@@ -1,11 +1,11 @@
-title: Detect PS command encoded execution - Execution
+title: Detects PowerShell command encoded execution
 id: 88c20d01-c051-4f0c-926a-9e53b50c5d24
 status: stable
 description: Detects the execution of encoded command using PowerShell
 references:
   - https://www.atomicredteam.io/atomic-red-team/atomics/T1059.001
-  - Atomic Test ATHPowerShellCommandLineParameter -EncodedCommand
-author: juanma
+  - https://unit42.paloaltonetworks.com/unit42-pulling-back-the-curtains-on-encodedcommand-powershell-attacks/
+author: Juanma
 date: 2025-10-26
 tags:
     - attack.execution
