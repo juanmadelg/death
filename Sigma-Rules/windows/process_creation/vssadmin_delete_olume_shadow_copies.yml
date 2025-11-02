@@ -1,0 +1,29 @@
+title: Detects Windows Delete Volume Shadow Copies
+id: 7dd3aab2-33e6-4f10-ae33-dba036ddb275
+status: experimental
+description: Detects the use of vssadmin.exe to delete shadow copies without printing output to the screen.
+references:
+  - hhttps://www.atomicredteam.io/atomic-red-team/atomics/T1490
+  - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/vssadmin
+  - https://attack.mitre.org/techniques/T1490/
+author: Juanma
+date: 2025-11-02
+tags:
+  - attack.t1048.003
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection_img:
+    Image|endswith: '\vssadmin.exe'
+    OriginalFileName: 'VSSADMIN.EXE'
+    CommandLine|contains:
+        - 'delete'
+        - 'shadows'
+        - '/all'
+        - '/quiet'
+  condition: selection_img
+falsepositives:
+  - Legitimate administrative jobs can use this file.
+level: high

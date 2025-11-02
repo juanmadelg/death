@@ -1,0 +1,29 @@
+title: Users and group discovery on a domain
+id: f8f6779b-ad0e-4efa-a180-5542c3d191b6
+status: experimental
+description: Detects the discovey of users accounts and groups on a domain by using commands such as net user, net group.
+references:
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1087.002
+  - https://www.jaiminton.com/Mitreatt&ck/T1087#
+  - https://systemweakness.com/detect-domain-account-discovery-techniques-on-windows-using-kql-and-atomic-red-1bacb2b76741
+author: juanma
+date: 2025-11-01
+tags:
+  - attack.t1087.002
+  - attack.discovery
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection_img:
+    Image|endswith: '\net.exe'
+    OriginalFileName: 'net.exe'
+    CommandLine|contains:
+        - 'net user /domain'
+        - 'net group /domain'
+  selection_parent:
+    ParentImage|endswith: '\cmd.exe'
+  condition: all of selection_*
+falsepositives:
+  - Legitimate administrative jobs can use this file.
+level: high

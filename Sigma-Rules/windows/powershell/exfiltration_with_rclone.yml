@@ -1,0 +1,31 @@
+title: Detects Exfiltration Over Alternative Protocol
+id: 6ea3bf32-9680-422d-9f50-e90716b12a66
+status: experimental
+description: Rclone may be used by an adversary to exfiltrate data to a publicly hosted FTP server.
+references:
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1048.003
+  - https://thedfirreport.com/2021/03/29/sodinokibi-aka-revil-ransomware/
+  - https://attack.mitre.org/software/S1040/
+author: Juanma
+date: 2025-11-02
+tags:
+  - attack.t1048.003
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: ps_script
+detection:
+  selection_img:
+    Image|endswith: '\powershell.exe'
+    OriginalFileName: 'PowerShell.EXE'
+  selection_script:
+    ScriptBlock|contains:
+        - 'rclone.exe'
+        - 'Get-ChildItem'
+        - 'exfil.zip'
+        - 'ftpserver'
+        - '--ftp-no-check-certificate'
+  condition: all of selection_*
+falsepositives:
+  - Legitimate administrative jobs can use this file.
+level: high
