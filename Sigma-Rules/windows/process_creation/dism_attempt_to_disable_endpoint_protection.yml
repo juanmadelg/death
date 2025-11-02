@@ -1,0 +1,32 @@
+title: DISM attempt to disable endpoint protection
+id: 6ea3bf32-9680-422d-9f50-e90716b12a66
+status: experimental
+description: Detects use of DISM to disable endpoint protection (Windows Defender) as part of the defense evasion
+references:
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1562.001
+  - https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/what-is-dism?view=windows-11
+author: Juanma
+date: 2025-11-01
+tags:
+  - attack.t1562.001
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection_img:
+    Image|endswith: '\Dism.exe' # process.executable
+    OriginalFileName: 'DISM.EXE' # process.pe.original_file_name
+  selection_cmd:
+    CommandLine|contains:
+        - 'Dism'
+        - '/online'
+        - '/Disable-Feature'
+        - '/FeatureName:Windows-Defender'
+        - '/Remove'
+        - '/NoRestart'
+        - '/quiet'
+  condition: all of selection_*
+falsepositives:
+  - Legitimate administrative jobs can use this file.
+level: high

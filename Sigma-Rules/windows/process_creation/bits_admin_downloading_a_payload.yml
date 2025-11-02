@@ -1,0 +1,28 @@
+title: BITS admin downloading a payload
+id: f3dc0761-69ca-4959-b0d7-342a67530d4a
+status: experimental
+description: Detects the use of Background Intelligent Transfer Service (BITS) to download a payload
+references:
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1197
+  - https://ladybug-carillon-7k6n.squarespace.com/mitre-library/mitre-bits-t1197
+  - https://www.jaiminton.com/Mitreatt&ck/T1197#
+author: Juanma
+date: 2025-11-01
+tags:
+  - attack.t1197
+  - attack.persistence
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection_img:
+    Image|endswith: '\bitsadmin.exe'
+    CommandLine|contains:
+      - '/transfer'
+      - '/Download'
+      - '/priority Foreground'
+  condition: selection_img
+falsepositives:
+  - Legitimate administrative jobs can use this file.
+level: high
