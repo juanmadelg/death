@@ -1,7 +1,7 @@
 title: Detects Exfiltration Over Alternative Protocol
 id: 6ea3bf32-9680-422d-9f50-e90716b12a66
 status: experimental
-description: Rclone may be used by an adversary to exfiltrate data to a publicly hosted FTP server.
+description: Rclone may be used by an adversary to exfiltrate data to a publicly hosted FTP server or any other destination
 references:
   - https://www.atomicredteam.io/atomic-red-team/atomics/T1048.003
   - https://thedfirreport.com/2021/03/29/sodinokibi-aka-revil-ransomware/
