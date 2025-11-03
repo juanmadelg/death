@@ -36,9 +36,9 @@ jobs:
 
     - name: Validate rules
       run: |
-        sigma check Sigma-Rules/windows/powershell
-        sigma check Sigma-Rules/windows/process_creation
-        sigma check Sigma-Rules/windows/registry_event
+        sigma check Sigma-Rules/windows/powershell/
+        sigma check Sigma-Rules/windows/process_creation/
+        sigma check Sigma-Rules/windows/registry_event/
 
 
     - name: Install Sigma CLI Elasticsearch backend
@@ -49,9 +49,9 @@ jobs:
     - name: Test that conversion does not fail
       if: github.event_name == 'pull_request'
       run: |
-        sigma convert -t lucene -f siem_rule_ndjson -p ecs_windows -o rules.ndjson Sigma-Rules/windows/powershell
-        sigma convert -t lucene -f siem_rule_ndjson -p ecs_windows -o rules.ndjson Sigma-Rules/windows/process_creation
-        sigma convert -t lucene -f siem_rule_ndjson -p ecs_windows -o rules.ndjson Sigma-Rules/windows/registry
+        sigma convert -t lucene -f siem_rule_ndjson -p ecs_windows -o rules.ndjson Sigma-Rules/windows/powershell/
+        sigma convert -t lucene -f siem_rule_ndjson -p ecs_windows -o rules.ndjson Sigma-Rules/windows/process_creation/
+        sigma convert -t lucene -f siem_rule_ndjson -p ecs_windows -o rules.ndjson Sigma-Rules/windows/registry_event/
 
     - name: Test that the post-process script runs without exceptions
       if: github.event_name == 'pull_request'
