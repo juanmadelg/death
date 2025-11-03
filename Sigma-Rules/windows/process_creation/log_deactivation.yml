@@ -1,13 +1,13 @@
 # Rule added to repository just as part of a test.
 title: Event log deactivation or size reduction (command)
+id: a36918cf-da4f-4e96-a012-a06f0147c8bd
 description: Detects scenarios where an attacker disable or reduce the size of an event log.
 references:
 - https://www.recordedfuture.com/five-common-ransomware-techniques
 - https://www.cybereason.com/blog/research/cybereason-vs.-ransomexx-ransomware
 - https://research.splunk.com/endpoint/236e7c8e-c9d9-11eb-a824-acde48001122/
 tags:
-- attack.defense_evasion
-- attack.t1562.002 # Disable Windows Event Logging
+  - attack.defense-evasion
 author: mdecrevoisier
 status: experimental
 logsource:

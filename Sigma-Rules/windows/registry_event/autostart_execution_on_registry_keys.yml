@@ -15,10 +15,12 @@ logsource:
   product: windows
 detection:
   selection_registry_path:
-    TargetObject|contains: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
-  selection_registry_values:
+    TargetObject|contains: '\Microsoft\Windows\CurrentVersion\Run'
+  selection_value_name:
+    RegistryValueName: 'Atomic Red Team'
+  selection_value_type:
     RegistruValueType: 'REG_SZ'
-  selection_registry_data:
+  selection_value_data:
     RegistryValueData|endswith: '.exe'
   condition: all of selection_*
 level: high
