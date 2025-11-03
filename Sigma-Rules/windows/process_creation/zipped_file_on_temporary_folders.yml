@@ -1,0 +1,27 @@
+title: Detects a zipped file on temporary folder
+id: 57d55e9e-c08f-4ed4-b7e3-a6270deebb98
+status: test
+description: Detects the use of living off the land tools to zip files on Windows temporary folders for later exfiltrations
+references:
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1074.001
+  - https://attack.mitre.org/techniques/T1074/001/
+  - https://www.jaiminton.com/Mitreatt&ck/T1074#
+author: Juanma
+date: 2025-11-02
+tags:
+  - attack.t1074.001
+  - attack.collection
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection_img:
+    Image|endswith: '\powershell.exe' # process.executable
+    OriginalFileName: 'PowerShell.EXE' # process.pe.original_file_name
+    CommandLine|contains:
+        - 'Compress-Archive -Path'
+        - 'DestinationPath $env:TEMP'
+  condition: selection_img
+falsepositives:
+  - Legitimate administrative jobs can use this file.
+level: high
