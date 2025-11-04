@@ -1,4 +1,4 @@
-title: Detects Windows Delete Volume Shadow Copies
+title: Windows Delete Volume Shadow Copies
 id: 7dd3aab2-33e6-4f10-ae33-dba036ddb275
 status: experimental
 description: Detects the use of vssadmin.exe to delete shadow copies without printing output to the screen.
