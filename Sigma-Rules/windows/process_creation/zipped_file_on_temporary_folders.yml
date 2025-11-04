@@ -1,4 +1,4 @@
-title: Detects a zipped file on temporary folder
+title: Zipped file on temporary folder
 id: 57d55e9e-c08f-4ed4-b7e3-a6270deebb98
 status: test
 description: Detects the use of living off the land tools to zip files on Windows temporary folders for later exfiltrations

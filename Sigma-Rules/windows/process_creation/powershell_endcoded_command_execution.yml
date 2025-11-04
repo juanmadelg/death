@@ -1,4 +1,4 @@
-title: Detects PowerShell command encoded execution
+title: PowerShell command encoded execution
 id: 88c20d01-c051-4f0c-926a-9e53b50c5d24
 status: stable
 description: Detects the execution of encoded command using PowerShell

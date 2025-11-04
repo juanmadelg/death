@@ -1,4 +1,4 @@
-title: Detectes Run Key Persistance
+title: Run Key Persistance on autostart subkeys
 id: f35a2849-1f48-49e7-b353-271ec89c7d07
 status: test
 description: Detects when a subkey contains a program stored on a startup entries and will run automatically when the user logs in.
