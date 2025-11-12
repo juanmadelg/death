@@ -1,0 +1,28 @@
+title: Create shortcut to cmd in startup folders
+id: 0b9d9d76-4e5b-4e8e-ab73-dfd5dc29c441
+status: test
+description: Adversaries may abuse shortcuts in the startup folder to execute their tools and achieve persistence.
+author: Juanma
+references:
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1547.009
+  - https://attack.mitre.org/techniques/T1547/009/
+date: 2025-11-09
+tags:
+    - attack.t1547.009
+    - attack.persistence
+    - attack.privilege-escalation
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_img:
+        Image|endswith: '\powershell.exe' # process.executable
+        TargetFileName: 'T1547.009.lnk' # file.name
+    selection_path:
+        TargetFileName|contains: # file.path
+          - '\Microsoft\Windows\Start Menu\Programs\Startup\'
+    condition: selection_img and selection_path
+falsepositives:
+  - None
+level: medium
+# Review final query after converting to Lucene

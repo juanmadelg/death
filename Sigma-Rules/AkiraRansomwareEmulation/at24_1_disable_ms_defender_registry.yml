@@ -1,0 +1,23 @@
+title: Disable Microsoft Defender Firewall via Registry - Registry event
+id: ff775502-284b-4f8d-b4d2-aa1d2666a1e2
+status: test
+description: Detects the attempt to disable Windpws Defender modifying the regisrty key
+author: Juanma
+references:
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1562.004
+  - https://attack.mitre.org/techniques/T1562/004/
+date: 2025-11-10
+tags:
+    - attack.t1562.004
+    - attack.defense-evasion
+logsource:
+    category: registry_event
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile\EnableFirewall'
+        Image|endswith: '\reg.exe'
+    condition: selection
+falsepositives:
+  - None
+level: high

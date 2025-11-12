@@ -1,0 +1,43 @@
+title: System Network Configuration Discovery on Windows
+id: 074dcdf8-d030-4db4-aa20-777a2c77840e
+status: test
+description: Adversaries may attempt to get a listing of services running on remote hosts and local network infrastructure devices.
+author: Juanma
+references:
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1016
+  - https://attack.mitre.org/techniques/T1016/
+  - https://www.cisa.gov/sites/default/files/publications/Best%20Practices%20for%20MITRE%20ATTCK%20Mapping.pdf
+date: 2025-11-08
+tags:
+  - attack.t1016
+  - attack.discovery
+  - attack.s0100
+  - attack.s0102
+  - attack.s0099
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+    Image|endswith:
+        - '\ipconfig.exe' # process.executable
+        - '\netsh.exe'
+        - '\ARP.EXE'
+        - '\nbtstat.exe'
+    OriginalFileName:
+        - 'ipconfig.exe' # process.pe.original_file_name
+        - 'netsh.exe'
+        - 'arp.exe'
+        - 'nbtinfo.exe'
+    ParentImage|endswith: '\cmd.exe' # process.parent.executable
+  selection_cmd:
+    CommandLine|contains:
+      - '/all'
+      - 'show'
+      - 'interace'
+      - '-a'
+      - '-n'
+  condition: all of selection_*
+falsepositives:
+  - Administrators or power users may use this command for troubleshooting
+level: medium
