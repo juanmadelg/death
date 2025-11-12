@@ -1,0 +1,29 @@
+title: Creation of FTP connection- Rclone
+id: efe6d15e-049f-41cc-8d04-9c038600906d
+status: test #, test, experimental, deprecated, unsupported
+description: Detects the FTP remote configuration made by rclone. This can be the step previous to the exfiltration also via rclone #Detects exfiltration over alternative protocol such as FTP using Rclone
+author: Juanma
+references:
+  - https://attack.mitre.org/techniques/T1048.003
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1048.003
+  - https://rclone.org/commands/
+  - https://rclone.org/ftp/
+date: 2025-11-11
+tags:
+    - attack.t1048.003
+    - attack.exfiltration
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+      Image|endswith: '\rclone.exe'
+      CommandLine|contains|all:
+          - 'config create'
+          - 'ftpserver'
+          - 'user'
+          - 'pass'
+    condition: selection
+falsepositives:
+    - Unknown
+level: medium

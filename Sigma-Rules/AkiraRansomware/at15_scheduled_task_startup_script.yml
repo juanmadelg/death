@@ -1,0 +1,33 @@
+title: Scheduled Task Startup Script
+id: 2c42e033-d87f-49fa-b962-bba5a9c52ea7
+status: test
+description: Create tasks that execute a program automatically at user logon or system startup.
+author: Juanma
+references:
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1053.005
+  - https://attack.mitre.org/techniques/T1053/005/
+  - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/schtasks
+date: 2025-11-09
+tags:
+    - attack.t1053.005
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.s0111
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+          - '/create'
+          - '/tn'
+          - '/sc'
+          - '/tr'
+          - 'onlogon'
+          - 'onstart'
+    condition: selection
+falsepositives:
+  - Unknown
+level: medium

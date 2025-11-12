@@ -1,0 +1,30 @@
+title: Basic Permission Groups Discovery Windows (Local)
+id: 483c9642-0e32-49d9-b651-2df4c55760e5
+status: stable
+description: Detects basic permissions groups discovery by the use of net localgoup command with the purpose to identify the Administratos group.
+author: Juanma
+references:
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1069.001
+  - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/cc725622(v=ws.11)
+  - https://attack.mitre.org/techniques/T1069/001/
+date: 2025-11-08
+tags:
+  - attack.t1069.001
+  - attack.discovery
+  - attack.s0039
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+   Image|endswith: '\net.exe' # process.executable
+   OriginalFileName: 'net.exe' # process.pe.original_file_name
+   ParentImage|endswith: '\cmd.exe' # process.parent.executable
+  selection_cmd:
+   CommandLine|contains:
+     - 'localgroup'
+     - 'Administrators'
+  condition: all of selection_*
+falsepositives:
+  - Administrators or power users may use this command for troubleshooting
+level: medium

@@ -1,0 +1,25 @@
+# Check the final query
+title: PureLocker Ransom Note
+id: 46cd70a4-d34b-428d-820e-142e1fca14d1
+status: test #, test, experimental, deprecated, unsupported
+description: Detects the creation of file YOUR_FILES.txt that contains the ransom note after the infection
+author: Juanma
+references:
+  - https://attack.mitre.org/techniques/T1486/
+  - https://www.atomicredteam.io/atomic-red-team/atomics/T1486
+  - https://www.bleepingcomputer.com/news/security/purelocker-ransomware-can-lock-files-on-windows-linux-and-macos/
+date: 2025-11-11
+tags:
+    - attack.t1486
+    - attack.impact
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+      Image|endswith: '\cmd.exe'
+      TargetFileName: 'YOUR_FILES.txt' # file.name
+    condition: selection
+falsepositives:
+    - Unknown
+level: medium
